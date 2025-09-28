@@ -24,6 +24,9 @@ fi
 
 echo "✅ Detected Arch-based system"
 
+# Store the original directory path
+ORIGINAL_DIR="$(pwd)"
+
 # Install system dependencies
 echo "📦 Installing system dependencies..."
 sudo pacman -S --needed python nodejs npm lm_sensors polkit
@@ -57,10 +60,10 @@ sudo chown $USER:$USER /opt/thinkfan-ui
 
 # Copy application files
 echo "📋 Copying application files..."
-cp -r backend /opt/thinkfan-ui/
-cp -r frontend/dist /opt/thinkfan-ui/frontend/
-cp start.py /opt/thinkfan-ui/
-cp start.sh /opt/thinkfan-ui/
+cp -r "$ORIGINAL_DIR/backend" /opt/thinkfan-ui/
+cp -r "$ORIGINAL_DIR/frontend/dist" /opt/thinkfan-ui/frontend/
+cp "$ORIGINAL_DIR/start.py" /opt/thinkfan-ui/
+cp "$ORIGINAL_DIR/start.sh" /opt/thinkfan-ui/
 
 # Create virtual environment and install Python dependencies using uv
 echo "🐍 Creating virtual environment and installing Python dependencies with uv..."
@@ -75,11 +78,11 @@ chmod +x /opt/thinkfan-ui/start.sh
 
 # Install desktop entry
 echo "🖥️ Installing desktop entry..."
-sudo cp thinkfan-ui-modern.desktop /usr/share/applications/
+sudo cp "$ORIGINAL_DIR/thinkfan-ui-modern.desktop" /usr/share/applications/
 
 # Install icon
 echo "🎨 Installing icon..."
-sudo cp linux_packaging/thinkfan-ui.svg /usr/share/icons/hicolor/scalable/apps/thinkfan-ui.svg
+sudo cp "$ORIGINAL_DIR/linux_packaging/thinkfan-ui.svg" /usr/share/icons/hicolor/scalable/apps/thinkfan-ui.svg
 
 # Create symlinks
 echo "🔗 Creating command line shortcuts..."
