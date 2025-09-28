@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=ThinkFan UI Modern
+Comment=Modern web-based fan control for ThinkPad laptops
+Exec=python3 /opt/thinkfan-ui/start.py
+Icon=thinkfan-ui
+Terminal=false
+Categories=System;Settings;HardwareSettings;
+Keywords=fan;thinkpad;temperature;cooling;system;
+StartupNotify=true
+MimeType=
+X-Desktop-File-Install-Version=0.26
