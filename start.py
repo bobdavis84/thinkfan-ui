@@ -13,6 +13,7 @@ def main():
     # Get the directory where this script is located
     app_dir = Path(__file__).parent.absolute()
     backend_dir = app_dir / "backend"
+    venv_dir = app_dir / ".venv"
     
     print("🚀 Starting ThinkFan UI v2.0.0")
     print("=" * 50)
@@ -22,6 +23,20 @@ def main():
         print("❌ Error: Backend directory not found!")
         print(f"Expected: {backend_dir}")
         sys.exit(1)
+    
+    # Check if virtual environment exists
+    if venv_dir.exists():
+        # Activate virtual environment by updating Python path
+        venv_python = venv_dir / "bin" / "python"
+        if venv_python.exists():
+            print("✅ Using virtual environment")
+            # Re-execute with virtual environment Python
+            if sys.executable != str(venv_python):
+                os.execv(str(venv_python), [str(venv_python)] + sys.argv)
+        else:
+            print("⚠️ Virtual environment found but Python executable missing")
+    else:
+        print("⚠️ No virtual environment found, using system Python")
     
     # Change to backend directory
     os.chdir(backend_dir)
@@ -33,7 +48,10 @@ def main():
         print("✅ Backend dependencies found")
     except ImportError as e:
         print(f"❌ Missing backend dependencies: {e}")
-        print("Please install with: pip install -r backend/requirements.txt")
+        if venv_dir.exists():
+            print("Please reinstall with: cd /opt/thinkfan-ui && source .venv/bin/activate && uv pip install -r backend/requirements.txt")
+        else:
+            print("Please install with: uv pip install -r backend/requirements.txt")
         sys.exit(1)
     
     # Check if frontend is built
